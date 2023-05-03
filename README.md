@@ -3,7 +3,7 @@
 Allows you to easily setup a deathrun map using just a few custom commands, and Carpet Mod!
 
 ## Prerequisites
-[Fabric](https://fabricmc.net/use/installer/) (1.19.3)
+[Fabric](https://fabricmc.net/use/installer/) (1.19.3)<br>
 [Carpet Mod](https://www.curseforge.com/minecraft/mc-mods/carpet/files?version=1.19.3) (1.19.3)
 
 ## How To Install
