@@ -8,18 +8,22 @@ Allows you to easily setup a deathrun map using just a few custom commands, and 
 
 ## How To Install
 1. Download or clone the repository and drag and drop all of the .sc files into your worlds `scripts` folder. If the folder doesn't exist, create it.
-2. Open the world, If the world is already opened run `/reload`.
-3. Run the following commands:<br>
+2. Copy/Cut and paste `resources.zip` into the root of your world folder. (Technically optional, Makes empty white bossbar invisible for stats at the top of the screen)
+3. Open the world, If the world is already opened run `/reload`.
+4. Run the following commands:<br>
+`/carpet setDefault commandScript ops`<br>
 `/script load deathrun_main` (This will automaticly load all the other scripts as well).
+5. Done!
 
 ## How To Use
 1. Open chat and type `/dr wand` to give your self the Death Run wand.
 2. Use the wand to select 2 corners (Similar to WorldEdit).
-3. Open chat and type `/dr add selection` to add the selection. You should now see a red box rendering showing your selected area(s). (Currently Traps only support a single area + the death area selection)
+3. Open chat and type `/dr add selection` to add the selection. You should now see a red box rendering showing your selected area(s). (Currently Traps only support a single area + the death area selection)<br>
+4. There are 2 wands for setting up a deathrun map to be playable, the `Main Selection Wand` and the `Deaths Trap Trigger Area Selection Wand` (Names are W.I.P). Details of how to setup a map to be playable coming soon<br>
 
 More Info Coming Soon...
 
 ## Planned / To Do
 1. Rewrite glass floor trap to support sloped glass floors. (Currently only supports a flat floor)
-2. Clean up / Optimize code.
+2. Major Rewrite to clean up and optimize the code.
 3. Add a Death Bot for solo play that will automaticly activate traps. (Will try to not make the bot over powered at that)
