@@ -1,4 +1,4 @@
-import('deathrun_utils', 'entity_box', 'clamp');
+import('deathrun_utils', 'entity_box');
 
 global_map = system_variable_get('deathrun:map_data', {});
 
@@ -144,7 +144,7 @@ teleport_to_trap() -> (
         );
         return('cancel');
     ));
-    sound('minecraft:entity.item.pickup', pos(player()), 1, 0, 'neutral');
+    run('playsound minecraft:entity.item.pickup neutral '+player()+' ~ ~ ~ 1 1');
 
     for (traps,
         inventory_set(screen, _i, 1, 'red_concrete', '{display:{Name:\'{"text":"Trap '+_i+'","italic":"false","bold":"true","color":"red"}\'}}');
