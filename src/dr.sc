@@ -269,6 +269,7 @@ save_map() -> (
 load_map(name) -> (
     global_map_output = read_file(name, 'shared_json');
     system_variable_set('deathrun:map_data', global_map_output);
+    run('reload'); // Temperary work-around fix for Issue #3
     print('Loaded map file from: scripts/shared/'+name+'.json');
 );
 
