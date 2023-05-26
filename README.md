@@ -2,13 +2,17 @@
 
 Allows you to easily setup a deathrun map using just a few custom commands, and Carpet Mod!
 
+## NOTE
+This script currently only supports/works in Minecraft 1.19.3. if you attempt to use this script in 1.19.4+ versions expect it to be unplayable and vary broken. Older versions below 1.19.3 have not been tested. 
+
 ## Prerequisites
 [Fabric](https://fabricmc.net/use/installer/) (1.19.3)<br>
 [Carpet Mod](https://www.curseforge.com/minecraft/mc-mods/carpet/files?version=1.19.3) (1.19.3)
 
 ## How To Install
 1. Download or clone the repository and drag and drop all of the .sc files into your worlds `scripts` folder from the `src` folder. If the folder doesn't exist, create it.
-2. Copy/Cut and paste `resources.zip` into the root of your world folder from the same `src` folder from the download. (Technically optional, Makes empty white bossbar invisible for stats at the top of the screen)
+2. (Singleplayer) Copy/Cut and paste `resources.zip` into the root of your world folder from the same `src` folder from the download. (Technically optional, Makes empty white bossbar invisible for stats at the top of the screen)
+3. (Multiplayer) Paste the link to the resources.zip file into `resource-pack` in server.properties, and set `require-resource-pack` to **true**
 3. Open the world, If the world is already opened run `/reload`.
 4. Run the following commands:<br>
 `/carpet setDefault commandScript ops`<br>
