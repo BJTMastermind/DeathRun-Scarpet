@@ -93,7 +93,7 @@ start() -> (
         c_for (i = 10, i > 0, i += -1,
             display_title(player('*'), 'actionbar', format('y Game Start ▶ ',if (i > 3, 'y', if (i >= 1, 'r', 'g'))+' ▋',if (i > 3, 'y', if (i >= 2, 'r', 'g'))+' ▋',if (i > 3, 'y', if (i >= 3, 'r', 'g'))+' ▋',if (i >= 4, 'y', 'g')+' ▋',if (i >= 5, 'y', 'g')+' ▋',if (i >= 6, 'y', 'g')+' ▋',if (i >= 7, 'y', 'g')+' ▋',if (i >= 8, 'y', 'g')+' ▋',if (i >= 9, 'y', 'g')+' ▋',if (i == 10, 'y', 'g')+' ▋','w  '+i));
             if (i >= 1 && i <= 3,
-                sound('minecraft:block.dispenser.dispense', pos(player), 1, 1, 'block');
+                sound('minecraft:block.dispenser.dispense', pos(player()), 1, 1, 'block');
             );
             sleep(1000);
         );
