@@ -14,6 +14,7 @@ __on_tick() -> (
         jump_pad();
 
         if (_should_player_be_dead(player()),
+            print(player(), format('r ▶ You died!'));
             _send_player_to_checkpoint_or_start_location(player());
         );
     );
@@ -29,16 +30,16 @@ __on_player_drops_stack(player) -> ( if (query(player(), 'has_scoreboard_tag', '
 
 setup_runners(player) -> (
     modify(player, 'tag', 'dr_runner');
-    inventory_set(player, 0, 1, 'feather', '{display:{Name:\'[{"text":"Leap ","italic":"false","color":"yellow"},{"text":"[Use]","color":"gray"}]\'}}');
+    inventory_set(player, 0, 1, 'feather', '{display:{Name:\'[{"text":"Leap ","italic":"false","color":"yellow"},{"text":"[Right-Click]","color":"gray"}]\'}}');
 );
 
 __on_player_uses_item(player, item_tuple, hand) -> (
     task_thread('__on_player_uses_item', _(player, item_tuple, hand) -> (
         if (get(item_tuple, 0) == 'feather',
-            if (get(item_tuple, 2) == '{display:{Name:\'[{"text":"Leap ","italic":"false","color":"yellow"},{"text":"[Use]","color":"gray"}]\'}}',
+            if (get(item_tuple, 2) == '{display:{Name:\'[{"text":"Leap ","italic":"false","color":"yellow"},{"text":"[Right-Click]","color":"gray"}]\'}}',
                 facing = query(player, 'look');
                 modify(player, 'motion', get(facing, 0) * 1.8, 0.34, get(facing, 2) * 1.8);
-                sound('minecraft:entity.ender_dragon.flap', pos(player), 1.0, 1.0, 'hostile');
+                sound('minecraft:entity.ender_dragon.flap', pos(player), 1.0, 1.0, 'hostile'); // Varify if you can hear other players using leap feather
                 scoreboard('leap', player, 1);
                 inventory_set(player(), 0, 0);
 
@@ -85,11 +86,11 @@ checkpoint() -> (
                 print(_, format('l ▶ ','y '+str(player())+' has finished in ','w '+_ordinal(for (player('*'), scoreboard('lastCheckpointId', _) == length(global_map:'checkpoints') - 1))+' ','y place! ','ig '+str('[%02d:%06.3f]', floor((finish_time - scoreboard('deathrun_variables', '#start_time')) / 1000 / 60), (finish_time - scoreboard('deathrun_variables', '#start_time')) / 1000 % 60)));
             );
             become_spectator();
-            sound('minecraft:entity.player.levelup', pos(player()), 1, 1, 'player');
+            run('playsound minecraft:entity.player.levelup player '+player()+' '+pos(player):0+' '+pos(player):1+' '+pos(player):2+' 1 1');
             run('script in deathrun_main run global_places:\''+player()+'\' = \''+str('[%02d:%06.3f]', floor((finish_time - scoreboard('deathrun_variables', '#start_time')) / 1000 / 60), (finish_time - scoreboard('deathrun_variables', '#start_time')) / 1000 % 60)+'\'');
             if (scoreboard('deathrun_variables', '#dr_timer_reduced') == 0,
                 for (player('*'),
-                    sound('minecraft:entity.elder_guardian.curse', pos(_), 1, 1, 'hostile');
+                    run('playsound minecraft:entity.elder_guardian.curse hostile '+player(_)+' '+pos(player(_)):0+' '+pos(player(_)):1+' '+pos(player(_)):2+' 1 1');
                     print(_, format('d ▶ ','y A player has finished! ','g Timer shortened to 60 seconds.'));
                     scoreboard('deathrun_variables', '#dr_timer_minutes', 1);
                     scoreboard('deathrun_variables', '#dr_timer_seconds', 0);
@@ -101,7 +102,7 @@ checkpoint() -> (
             if (scoreboard('leap', player()) == 0,
                 display_title(player(), 'actionbar', format('l Checkpoint! ','g '+name));
             );
-            sound('minecraft:entity.player.levelup', pos(player()), 1, 1, 'player');
+            run('playsound minecraft:entity.player.levelup player '+player()+' '+pos(player):0+' '+pos(player):1+' '+pos(player):2+' 1 1');
         );
     );
 );
@@ -119,6 +120,7 @@ speed_pad() -> (
                 text1 = get(split('"', get(sign_data, 'Text1')), -2);
                 text2 = get(split('"', get(sign_data, 'Text2')), -2);
 
+                print(player(), format('y ▶ ','w You gained ','d Speed'));
                 modify(player(), 'effect', 'speed', 20 * number(text2), number(text1));
                 modify(player(), 'tag', 'has_speed');
             );
@@ -141,6 +143,7 @@ jump_pad() -> (
                 text1 = get(split('"', get(sign_data, 'Text1')), -2);
                 text2 = get(split('"', get(sign_data, 'Text2')), -2);
 
+                print(player(), format('y ▶ ','w You gained ','d Jump Boost'));
                 modify(player(), 'effect', 'jump_boost', 20 * number(text2), number(text1));
                 modify(player(), 'tag', 'has_jump');
             );
@@ -184,7 +187,7 @@ _get_checkpoint_id() -> (
 
 _should_player_be_dead(player) -> (
     standing_in_block = block(pos(player));
-    if (standing_in_block == 'water' || standing_in_block == 'lava' || standing_in_block == 'fire' || standing_in_block == 'soul_fire' || run('data get entity '+player+' HurtTime'):0 > 0,
+    if (standing_in_block == 'water' || standing_in_block == 'lava' || standing_in_block == 'fire' || standing_in_block == 'soul_fire' || run('data get entity '+player+' HurtTime'):0 == 9,
         return(true);
     );
     return(false);
@@ -221,12 +224,12 @@ _send_player_to_checkpoint_or_start_location(player) -> (
             checkpoint_ground_center:0 += -2;
             rotation:null = 90;
         ))));
+        run('playsound minecraft:entity.zombie.hurt hostile @a ~ ~ ~ 1 1');
         modify(player, 'pos', [checkpoint_ground_center:0 + 0.5, checkpoint_ground_center:1, checkpoint_ground_center:2 + 0.5]);
         modify(player, 'yaw', rotation:1);
         modify(player, 'pitch', rotation:0);
     );
     scoreboard('deathCount', player, (scoreboard('deathCount', player) + 1));
-    sound('minecraft:entity.zombie.hurt', pos(player), 1, 1, 'hostile');
 );
 
 _ordinal(num) -> (
