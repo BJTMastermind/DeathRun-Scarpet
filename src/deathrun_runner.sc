@@ -224,7 +224,7 @@ _send_player_to_checkpoint_or_start_location(player) -> (
             checkpoint_ground_center:0 += -2;
             rotation:null = 90;
         ))));
-        run('playsound minecraft:entity.zombie.hurt hostile @a ~ ~ ~ 1 1');
+        sound('minecraft:entity.zombie.hurt', pos(player), 1, 1, 'hostile');
         modify(player, 'pos', [checkpoint_ground_center:0 + 0.5, checkpoint_ground_center:1, checkpoint_ground_center:2 + 0.5]);
         modify(player, 'yaw', rotation:1);
         modify(player, 'pitch', rotation:0);
